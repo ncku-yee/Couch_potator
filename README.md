@@ -22,7 +22,7 @@ You can click the URL, and enjoy your video.<br/>
 By the way, you can also type [```fsm```/```FSM```] to get the image of **finite state machine**.
 
 ## Finite State Machine
-![image](https://comic-animate-yt.herokuapp.com/show-fsm)
+![image](https://i.imgur.com/FZ5NRxA.png)
 
 ## Set up
 The environment of this application is shown below.
