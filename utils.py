@@ -3,7 +3,7 @@ import os
 from linebot import LineBotApi, WebhookParser
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, StickerSendMessage, ImageSendMessage, TemplateSendMessage, ImagemapSendMessage
 from linebot.models import URIImagemapAction, MessageTemplateAction, PostbackTemplateAction, URITemplateAction, MessageImagemapAction
-from linebot.models importCarouselTemplate, , ImageCarouselTemplate, ButtonsTemplate,  ConfirmTemplate
+from linebot.models import CarouselTemplate, ImageCarouselTemplate, ButtonsTemplate, ConfirmTemplate
 from linebot.models import CarouselColumn, ImageCarouselColumn, BaseSize, ImagemapArea
 
 
