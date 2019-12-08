@@ -86,7 +86,7 @@ class TocMachine(GraphMachine):
                 message_label = ["看漫畫", "看動漫", "youtube", "FSM"]
                 message_text = ["看漫畫", "看動漫", "youtube", "FSM"]
                 send_button_message(event.reply_token, "指令集", \
-                    "請點選以下指令，以繼續動作\n隨時都可輸入\"退出\"回到本頁面", "https://i.imgur.com/HYZkYHr.jpg", message_label, message_text)
+                    "請點選以下指令，以繼續動作\n隨時都可輸入\"退出\"回到本頁面", "https://i.imgur.com/3xofosk.jpg", message_label, message_text)
         else:
             
             send_text_message(reply_token, "已經是最新一集的最後一頁囉\udbc0\udc83\n請再次重新輸入指令\udbc0\udc96\n如果忘記有哪些指令可輸入\"指令集\"\udbc0\udc8d")
@@ -131,7 +131,7 @@ class TocMachine(GraphMachine):
                 self.recommand_comic_list.append(comic_list[random_index])
                 self.recommand_comic_url_list.append(url_list[random_index])
             send_button_message(event.reply_token, "請輸入漫畫名稱", \
-                    "以下4部漫畫為系統推薦\n隨時都可輸入\"退出\"回到本頁面", "https://i.imgur.com/HYZkYHr.jpg", self.recommand_comic_list, self.recommand_comic_list)
+                    "以下4部漫畫為系統推薦\n隨時都可輸入\"退出\"回到本頁面", "https://i.imgur.com/3xofosk.jpg", self.recommand_comic_list, self.recommand_comic_list)
         else:
             send_text_message(reply_token, "\udbc0\udc92沒有此漫畫\udbc0\udc92\n請重新輸入漫畫名稱\udbc0\udc8a\n\udbc0\udc9d或是輸入退出\udbc0\udc9d")
             self.comic_not_found = False

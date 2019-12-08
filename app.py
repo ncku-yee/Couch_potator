@@ -189,12 +189,12 @@ def webhook_handler():
                 message_label = ["看漫畫", "看動漫", "youtube", "FSM"]
                 message_text = ["看漫畫", "看動漫", "youtube", "FSM"]
                 send_button_message(event.reply_token, "指令集", \
-                    "請點選以下指令，以繼續動作\n隨時都可輸入\"退出\"回到本頁面", "https://i.imgur.com/HYZkYHr.jpg", message_label, message_text)
+                    "請點選以下指令，以繼續動作\n隨時都可輸入\"退出\"回到本頁面", "https://i.imgur.com/3xofosk.jpg", message_label, message_text)
             elif machine.state == "show_fsm":
                 send_text_message(event.reply_token, "\udbc0\udc7c請輸入\"退出\"以繼續操作\udbc0\udc7c")
             elif machine.state == "next_page":
                 send_button_message(event.reply_token, "無此指令", \
-                    "請選擇以下指令以繼續觀賞", "https://i.imgur.com/HYZkYHr.jpg", ["下一頁", "退出"], ["下一頁", "退出"])
+                    "請選擇以下指令以繼續觀賞", "https://i.imgur.com/3xofosk.jpg", ["下一頁", "退出"], ["下一頁", "退出"])
             # if machine.state == "show_fsm" or "search_animate" or "search_yt" or "search_comic" or "select_episode" or "select_match":
 
 
