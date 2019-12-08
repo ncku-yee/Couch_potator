@@ -177,8 +177,6 @@ Every time ```user``` state is triggered to ```advance``` to another state, you 
         * Reply: <br/>
 	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/select_not_found.jpg)<br/>
         * **Will back to ```select_match``` state.**<br/>
-    * **For example:**<br/>
-![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/select_match.jpg)<br/>
 
 9. For ```select_episode``` state is tiggered to ```view_comic``` state.<br/>
     * Input: "第964話"
