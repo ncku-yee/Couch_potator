@@ -108,131 +108,103 @@ The initial state is set to ```user```.<br/>
 Every time ```user``` state is triggered to ```advance``` to another state, you can type ```退出``` / ```返回``` / ```exit``` / ```quit``` to go back to ```user``` state.
 1. For ```user``` state is tiggered to ```search_comic``` state.<br/>
     * Input: "看漫畫"
-        * Reply: "(hello)請輸入漫畫名稱(hello)"
+        * Reply:<br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/comic_instruction.jpg)<br/>
+		* **we will provide 4 recommand comic for you.**
     * Input: "看影片"
-        * Reply: "(sad)沒有這個指令(sad)"<br/>
-    * **For example:**<br/>
-![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/user_state.jpg)<br/>
-
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/no_instruction.jpg)<br/>
+		* **There will a message that tell you which instruction you can select.**
+		
 2. For ```user``` state is tiggered to ```search_animate``` state.<br/>
     * Input: "看動漫"
-        * Reply: "(hello)請輸入動漫名稱(hello)"
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/animate_instruction.jpg)<br/>
     * Input: "看影片"
-        * Reply: "(sad)沒有這個指令(sad)"<br/>
-    * **For example:**<br/>   
-![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/search_animate.jpg)<br/>
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/no_instruction.jpg)<br/>
+		* **There will a message that tell you which instruction you can select.**
 
 3. For ```search_animate``` state is tiggered to ```select_animate``` state.<br/>
     * **Important: Can not run on Heroku(Reason is not found currently, but it still can run on ngrok.)**
-    * Input: Any keywords is OK(e.g. **海賊王**)
-        * Reply: "(love)搜尋結果:(love)<br/>
-		海賊王(第912集):<br/>
-		https://ani.gimy.tv/vod-play-id-32-src-1-num-1.html<br/>
-		海賊王/航海王(更新至912集):<br/>
-		https://ani.gimy.tv/vod-play-id-3342-src-1-num-1.html<br/>
-		海賊王劇場版10：強者天下(HD):<br/>
-		https://ani.gimy.tv/vod-play-id-3856-src-1-num-1.html<br/>
-		海賊王：狂熱行動(HC):<br/>
-		https://ani.gimy.tv/vod-play-id-5931-src-1-num-1.html<br/>
-		海賊王劇場版1：黃金島冒險(HD1280高清中字版):<br/>
-		https://ani.gimy.tv/vod-play-id-3859-src-1-num-1.html<br/>
-		海賊王劇場版3：珍獸島的喬巴王國(HD1280高清中字版):<br/>
-		https://ani.gimy.tv/vod-play-id-3864-src-1-num-1.html..."<br/>
-		or<br/>
-		"(blue)找不到此動漫(blue)<br/>
-		請重新輸入動漫名稱(james wink)<br/>
-		(aww)或是輸入退出(aww)"
+    * Input: Any keywords is OK(e.g. **海賊王** and **德魯娜酒店** and **123456**)
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/animate_search.jpg)<br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/korean_drama.jpg)<br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/animate_not_found.jpg)<br/>
 	* **Will back to ```search_animate``` state.**<br/>
-    * **For example:**<br/>   
-![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/result_animate.jpg)<br/>
 
 4. For ```user``` state is tiggered to ```search_yt``` state.<br/>
     * Input: "YT" or "youtube"
-        * Reply: "(hello)請輸入關鍵字(hello)"
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/youtube_instruction.jpg)<br/>
+		* **We will provide you the trending videos for you to take reference.**
     * Input: "看影片"
-        * Reply: "(sad)沒有這個指令(sad)"<br/>
-    * **For example:**<br/>
-![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/search_yt.jpg)<br/>
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/no_instruction.jpg)<br/>
+		* **There will a message that tell you which instruction you can select.**
 
 5. For ```search_yt``` state is tiggered to ```select_yt``` state.<br/>
     * Input: Any keywords is OK(e.g. **太陽**)
-        * Reply: "(love)搜尋結果:(love)<br/>
-		標題:邱振哲PikA 【 太陽 】 Official Music Video(4:24)<br/>
-		https://www.youtube.com/watch?v=7vlVjfMl_Nk<br/>
-		標題:曲肖冰 - 太陽『我只想做你的太陽，在你的心裡呀，在你的心底呀。』【動態歌詞Lyrics】(4:18)<br/>
-		https://www.youtube.com/watch?v=UpiATw00vx8<br/>
-		標題:中國好聲音2019【第一期】 馬杰雪-太陽(4:22<br/>
-		https://www.youtube.com/watch?v=nrkuOHH51v0<br/>
-		標題:【太阳兽】新家开箱，居家爱用物分享(12:18)<br/>
-		https://www.youtube.com/watch?v=_dc3tIdzAns<br/>
-		標題:马杰雪 - 太阳(Live)『就算不能在你身旁 也要奋力为你而发光 ♪』【動態歌詞】(4:30)<br/>
-		https://www.youtube.com/watch?v=RISGV-s4Og4 ..."<br/>
-		or<br/>
-		"(blue)找不到視頻(blue)<br/>
-		請重新輸入關鍵字(james wink)<br/>
-		(aww)或是輸入退出(aww)"
-	 * **Will back to ```search_yt``` state.**<br/>
-    * **For example:**<br/>
-![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/result_yt.jpg)<br/>
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/youtube_search.jpg)<br/>
+		* **We will provide top 10 matches according to your searching query.**<br/>
+		* **Will back to ```search_yt``` state.**<br/>
 
 6. For ```user``` state is tiggered to ```show_fsm``` state.<br/>
-    * Input: "fsm"
-        * Reply: ![image](https://comic-animate-yt.herokuapp.com/show-fsm)<br/>
-    * **For example:**<br/>
-![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/show_fsm.jpg)<br/>
+    * Input: "FSM"
+        * Reply:<br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/fsm_instruction.jpg)<br/>
 
 7. For ```search_comic``` state is tiggered to ```select_match``` state.<br/>
     * Input: "海賊王"
-        * Reply: "(sparkling eyes)以下為搜尋結果:(sparkling eyes)<br/>
-		 1. 特別篇 海賊王X龍珠<br/>
-		 2. 海賊王<br/>
-		請選擇其中一個漫畫繼續觀賞"
-    * Input: "漫畫"
-        * Reply: "(blue)沒有此漫畫(blue)<br/>
-                  請重新輸入漫畫名稱(james wink)<br/>
-                  (aww)或是輸入退出(aww)"
+        * Reply: <br/>
+	**This situation is that you select comic from we provide you.**<br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/select_recommand.jpg)<br/>
+	**This situation is that you enter your own comic book name.**<br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/select_match.jpg)<br/>
+    * Input: "123456"
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/comic_not_found.jpg)<br/>
         * **Will back to ```search_comic``` state.**<br/>
-    * **For example:**<br/>
-![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/search_comic.jpg)<br/>
 
 8. For ```select_match``` state is tiggered to ```select_episode``` state.<br/>
     * Input: "海賊王"
-        * Reply: "(sparkling eyes)以下為搜尋集數:(sparkling eyes)<br/>
-		第001卷 ~ 第068卷<br/>
-		第679話 ~ 第964話<br/>
-		輸入你要的集數可以觀看該回漫畫(cony kiss)"
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/select_episode.jpg)<br/>
+		* **We will provide the lastest 4 episode for the specific comic.**
     * Input: "海賊"
-        * Reply: "(tongue out)輸入錯誤漫畫(tongue out)<br/>
-		請再次從以下結果中選擇其中一個漫畫:(hmph)<br/>
-		 1. 特別篇 海賊王X龍珠<br/>
-		 2. 海賊王"
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/select_not_found.jpg)<br/>
         * **Will back to ```select_match``` state.**<br/>
     * **For example:**<br/>
 ![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/select_match.jpg)<br/>
 
 9. For ```select_episode``` state is tiggered to ```view_comic``` state.<br/>
     * Input: "第964話"
-        * Reply: ![image](https://pic.8comic.se/wp-content/uploads/a04cj84wj6uq04/1152/964/001.jpg)
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/browse_episode.jpg)<br/>
     * Input: "第999話"
-        * Reply: "(blue)沒有此回漫畫(blue)<br/>
-                  請重新輸入集數(james wink)"
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/episode_not_found.jpg)<br/>
         * **Will back to ```select_episode``` state.**<br/>
-    * **For example:**<br/>
-![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/select_comic.jpg)<br/>
 
 10. For ```view_comic``` state is tiggered to ```next_page``` state.<br/>
     * Input: "N" / "n" / "Next" / "下一頁"
-        * Reply: ![iamge](https://pic.8comic.se/wp-content/uploads/a04cj84wj6uq04/1152/964/002.jpg)
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/next_page.jpg)<br/>
+		* **In this state, you can type another episode and jump there to exit current episode.**<br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/change_episode.jpg)<br/>
+		* **In this state, if you have already reach the last page and want to access next page will the image show.**<br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/end_of_page.jpg)<br/>
     * Input: "上一頁"
-        * Reply: "(sad)沒有這個指令(sad)"<br/>
-    * **For example:**<br/>
-![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/view_state.jpg)<br/>
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/next_page_no_instruction.jpg)<br/>
 
 11. In any state, you can type ```退出``` / ```返回``` / ```exit``` / ```quit``` to go back to ```user``` state.<br/>
     * Input: "退出" / "返回" / "exit" / "quit"
-        * Reply: "(sparkling eyes)請輸入指令(sparkling eyes)"<br/>
-    * **For example:**<br/>
-![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/exit.jpg)<br/>
+        * Reply: <br/>
+	![image](https://github.com/ncku-yee/Couch_potator/blob/master/img/exit.jpg)<br/>
 
 ## Deploy on Heroku
 Now, my LINE chat-bot is deployed on heroku.<br/>
