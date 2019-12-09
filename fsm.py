@@ -379,53 +379,49 @@ class TocMachine(GraphMachine):
     def is_going_to_select_animate(self, event):
         text = event.message.text
         # Headers for this search website
-        headers = {
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
-            "Accept-Encoding": "gzip, deflate",
-            "Accept-Language": "zh-TW,zh;q=0.9,en;q=0.8,en-US;q=0.7",
-            "Cache-Control": "no-cache",
-            "Connection": "keep-alive",
-            "Cookies": "savelist=%E6%B5%B7%E8%B3%8A%E7%8E%8B%24%24%24%24%24%24wrw65165",
-            "Host": "www.99kubo.tv",
-            "Pragma": "no-cache",
-            "Referer": "http://www.99kubo.tv/",
-            "Upgrade-Insecure-Requests": "1",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
-        }
-        url = "http://www.99kubo.tv/index.php?s=home-vod-innersearch&q=" + text
-        result = self.session_requests.get(url, headers=headers)
+        # headers = {
+        #     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
+        #     "Accept-Encoding": "gzip, deflate",
+        #     "Accept-Language": "zh-TW,zh;q=0.9,en;q=0.8,en-US;q=0.7",
+        #     "Cache-Control": "no-cache",
+        #     "Connection": "keep-alive",
+        #     "Cookies": "savelist=%E6%B5%B7%E8%B3%8A%E7%8E%8B%24%24%24%24%24%24wrw65165",
+        #     "Host": "www.99kubo.tv",
+        #     "Pragma": "no-cache",
+        #     "Referer": "http://www.99kubo.tv/",
+        #     "Upgrade-Insecure-Requests": "1",
+        #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
+        # }
+        # url = "http://www.99kubo.tv/index.php?s=home-vod-innersearch&q=" + text
+        url = "https://tw.iqiyi.com/search?q=" + text
+        result = self.session_requests.get(url)
         soup = bs(result.text, 'html.parser')
         self.search_result = ''
         self.message_title = [] 
         self.message_image = []
         self.message_text = [] 
         self.message_uri = []
-        time_list = []
         match_count = 0
-        for entry in soup.select('cite'):
-            # Max match results
+        for entry in soup.find_all('div', class_="search-item"):
+            # At most list 10 matches
             if match_count == 10:
                 break
-            time_list.append(entry.text)
+            # Get preview image
+            for image_section in entry.find_all('div', class_="plist-con"):
+                image_url = image_section.find('a')["style"].split(" ")[1]
+                image_url = re.sub("url\(", "https:", image_url)
+                image_url = re.sub("\)", "", image_url)
+                self.message_image.append(image_url)
+            # Get drama name and url
+            for image_section in entry.find_all('div', class_="search-item__title"):
+                url = image_section.find('a')['href']
+                drama_name = image_section.find('a').text
+                drama_name = re.sub(" ", "", drama_name)
+                self.message_text.append(drama_name[:60])
+                self.message_uri.append("https:" + url)
+            self.message_title.append("搜尋結果{}".format(match_count + 1))
+            self.search_result += ("標題: {}\n{}\n".format(self.message_text[match_count], self.message_uri[match_count]))
             match_count += 1
-        match_count = 0
-        for entry in soup.select('a'):
-            m = re.search("/vod-read-id-(\d*).html",entry['href'])
-            if m:
-                # At most list 10 matches
-                if match_count == 10:
-                    break
-                if entry.find('img') == None:
-                    title = entry.text.split('-')[0]
-                    self.message_text.append(title[:60])
-                    self.message_uri.append("http://www.99kubo.tv" + entry['href'])
-                    match_count += 1
-                    # Get preview image
-                else:
-                    self.message_image.append(re.sub(r"http:", "https:", entry.find('img')['src']))
-        for index in range(len(self.message_uri)):
-            self.message_title.append("搜尋結果{}".format(index + 1))
-            self.search_result += ("標題: {}\n{}\n{}\n".format(self.message_text[index], time_list[index], self.message_uri[index]))
         return True
         
     def on_enter_select_animate(self, event):
