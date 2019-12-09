@@ -377,7 +377,7 @@ class TocMachine(GraphMachine):
     # For select_animate state
     def is_going_to_select_animate(self, event):
         text = event.message.text
-        url = "https://tw.iqiyi.com/search?gl=TW&hl=zh-tw&q=" + text
+        url = "http://www.99kubo.tv/index.php?s=home-vod-innersearch&q=" + text
         # Use proxy
         result = self.session_requests.get(url, proxies={"https": "https://114.32.215.139:8080"})
         soup = bs(result.text, 'html.parser')
