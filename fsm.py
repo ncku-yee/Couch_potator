@@ -378,22 +378,7 @@ class TocMachine(GraphMachine):
     # For select_animate state
     def is_going_to_select_animate(self, event):
         text = event.message.text
-        # Headers for this search website
-        # headers = {
-        #     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
-        #     "Accept-Encoding": "gzip, deflate",
-        #     "Accept-Language": "zh-TW,zh;q=0.9,en;q=0.8,en-US;q=0.7",
-        #     "Cache-Control": "no-cache",
-        #     "Connection": "keep-alive",
-        #     "Cookies": "savelist=%E6%B5%B7%E8%B3%8A%E7%8E%8B%24%24%24%24%24%24wrw65165",
-        #     "Host": "www.99kubo.tv",
-        #     "Pragma": "no-cache",
-        #     "Referer": "http://www.99kubo.tv/",
-        #     "Upgrade-Insecure-Requests": "1",
-        #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
-        # }
-        # url = "http://www.99kubo.tv/index.php?s=home-vod-innersearch&q=" + text
-        url = "https://tw.iqiyi.com/search?q=" + text
+        url = "https://tw.iqiyi.com/search?gl=TW&hl=zh-tw&q=" + text
         result = self.session_requests.get(url)
         soup = bs(result.text, 'html.parser')
         self.search_result = ''
