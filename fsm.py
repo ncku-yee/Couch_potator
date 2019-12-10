@@ -386,11 +386,11 @@ class TocMachine(GraphMachine):
         text = event.message.text
         url = "http://www.99kubo.tv/index.php?s=home-vod-innersearch&q=" + text
         # Use proxy
-        proxies = [ "http://60.248.199.206:80", \
+        proxies = [ "http://1.164.250.150:8080", \
+                    "http://60.248.199.206:80", \
                     "http://118.163.13.200:8080", \
                     "http://211.21.120.163:8080", \
                     "http://1.175.135.224:3128", \
-                    "http://1.164.250.150:8080", \
                     "http://61.220.204.25:3128", \
                     "http://60.250.243.228:3128", \
                     "http://220.130.205.58:8080"
