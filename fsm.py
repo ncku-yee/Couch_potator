@@ -437,7 +437,8 @@ class TocMachine(GraphMachine):
                     match_count += 1
                     # Get preview image
                 else:
-                    self.message_image.append(entry.find('img')['src'])
+                    image_url = re.sub(r"http:", "https:", entry.find('img')['src'])
+                    self.message_image.append(image_url)
         for index in range(len(self.message_uri)):
             self.message_title.append("搜尋結果{}".format(index + 1))
             self.search_result += ("標題: {}\n{}\n{}\n".format(self.message_text[index], time_list[index], self.message_uri[index]))
