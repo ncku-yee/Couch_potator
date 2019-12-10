@@ -405,6 +405,7 @@ class TocMachine(GraphMachine):
         match_count = 0
         if status_code == 404:
             url = "https://tw.iqiyi.com/search?gl=TW&q=" + text
+            result = requests.get(url)
             soup = bs(result.text, 'html.parser')
             for entry in soup.find_all('div', class_="search-item"):
                 # At most list 10 matches
@@ -429,6 +430,7 @@ class TocMachine(GraphMachine):
         else:
             # For 99kubo
             time_list = []
+            soup = bs(result.text, 'html.parser')
             for entry in soup.select('cite'):
                 # Max match results
                 if match_count == 10:
