@@ -54,6 +54,8 @@ class TocMachine(GraphMachine):
     yt_loop = None
     # Flag to record that whether the state is from select_animate to search_animate
     animate_loop = None
+    # Flag to record that if all of proxies is working well(True = All of them doesn't work)
+    proxy_error = None
 
     # List for send_carousel_uri_message function 
     message_image = None
@@ -73,6 +75,7 @@ class TocMachine(GraphMachine):
         self.yt_loop = False
         self.animate_loop = False
         self.comic_select_not_found = False
+        self.proxy_error = False
 
     # For user state
     def is_going_to_user(self, event):
@@ -99,6 +102,7 @@ class TocMachine(GraphMachine):
         self.yt_loop = False
         self.animate_loop = False
         self.comic_select_not_found = False
+        self.proxy_error = False
 
     def on_exit_user(self, event=None):
         print("Leaving user") 
@@ -369,7 +373,10 @@ class TocMachine(GraphMachine):
         if not self.animate_not_found:
             send_text_message(reply_token, "\uDBC0\uDC84請輸入動漫名稱\uDBC0\uDC84")
         else:
-            send_text_message(reply_token, "\udbc0\udc92找不到此動漫\udbc0\udc92\n請重新輸入動漫名稱\udbc0\udc8a\n\udbc0\udc9d或是輸入退出\udbc0\udc9d")
+            if self.proxy_error:
+                send_text_message(reply_token, "\udbc0\udc92代理伺服器目前不可使用\udbc0\udc92\n請暫時不要使用此功能\udbc0\udc8a\n\udbc0\udc9d輸入退出\udbc0\udc9d")
+            else:
+                send_text_message(reply_token, "\udbc0\udc92找不到此動漫\udbc0\udc92\n請重新輸入動漫名稱\udbc0\udc8a\n\udbc0\udc9d或是輸入退出\udbc0\udc9d")
             self.animate_not_found = False
 
     def on_exit_search_animate(self, event):
@@ -377,8 +384,31 @@ class TocMachine(GraphMachine):
     # For select_animate state
     def is_going_to_select_animate(self, event):
         text = event.message.text
-        url = "https://tw.iqiyi.com/search?gl=TW&q=" + text
-        result = self.session_requests.get(url)
+        url = "http://www.99kubo.tv/index.php?s=home-vod-innersearch&q=" + text
+        # Use proxy
+        proxies = [ "http://w3.ntu.edu.tw:3128", \
+                    "http://60.248.199.206:80", \
+                    "http://118.163.13.200:8080", \
+                    "http://211.21.120.163:8080", \
+                    "http://1.175.135.224:3128", \
+                    "http://1.164.250.150:8080", \
+                    "http://61.220.204.25:3128", \
+                    "http://60.250.243.228:3128", \
+                    "http://220.130.205.58:8080"
+        # ]
+        status_code = 404
+        for proxy in proxies:
+            try:
+                result = requests.get(url, proxies={"http": proxy})
+                status_code = 200
+                break
+            except:
+                print("{} is not avaliable.".format(proxy))
+                continue
+        if status_code == 404:
+            self.search_result = ""
+            self.proxy_error = True
+            return True
         soup = bs(result.text, 'html.parser')
         self.search_result = ''
         self.message_title = [] 
@@ -387,51 +417,51 @@ class TocMachine(GraphMachine):
         self.message_uri = []
         match_count = 0
         # For 99kubo
-        # time_list = []
-        # for entry in soup.select('cite'):
-        #     # Max match results
-        #     if match_count == 10:
-        #         break
-        #     time_list.append(entry.text)
-        #     match_count += 1
-        # match_count = 0
-        # for entry in soup.select('a'):
-        #     m = re.search("/vod-read-id-(\d*).html",entry['href'])
-        #     if m:
-        #         # At most list 10 matches
-        #         if match_count == 10:
-        #             break
-        #         if entry.find('img') == None:
-        #             title = entry.text.split('-')[0]
-        #             self.message_text.append(title[:60])
-        #             self.message_uri.append("http://www.99kubo.tv" + entry['href'])
-        #             match_count += 1
-        #             # Get preview image
-        #         else:
-        #             self.message_image.append(entry.find('img')['src'])
-        # for index in range(len(self.message_uri)):
-        #     self.message_title.append("搜尋結果{}".format(index + 1))
-        #     self.search_result += ("標題: {}\n{}\n{}\n".format(self.message_text[index], time_list[index], self.message_uri[index]))
-        for entry in soup.find_all('div', class_="search-item"):
-            # At most list 10 matches
+        time_list = []
+        for entry in soup.select('cite'):
+            # Max match results
             if match_count == 10:
                 break
-            # Get preview image
-            for image_section in entry.find_all('div', class_="plist-con"):
-                image_url = image_section.find('a')["style"].split(" ")[1]
-                image_url = re.sub("url\(", "https:", image_url)
-                image_url = re.sub("\)", "", image_url)
-                self.message_image.append(image_url)
-            # Get drama name and url
-            for image_section in entry.find_all('div', class_="search-item__title"):
-                url = image_section.find('a')['href']
-                drama_name = image_section.find('a').text
-                drama_name = re.sub(" ", "", drama_name)
-                self.message_text.append(drama_name[:60])
-                self.message_uri.append("https:" + url)
-            self.message_title.append("搜尋結果{}".format(match_count + 1))
-            self.search_result += ("標題: {}\n{}\n".format(self.message_text[match_count], self.message_uri[match_count]))
+            time_list.append(entry.text)
             match_count += 1
+        match_count = 0
+        for entry in soup.select('a'):
+            m = re.search("/vod-read-id-(\d*).html",entry['href'])
+            if m:
+                # At most list 10 matches
+                if match_count == 10:
+                    break
+                if entry.find('img') == None:
+                    title = entry.text.split('-')[0]
+                    self.message_text.append(title[:60])
+                    self.message_uri.append("http://www.99kubo.tv" + entry['href'])
+                    match_count += 1
+                    # Get preview image
+                else:
+                    self.message_image.append(entry.find('img')['src'])
+        for index in range(len(self.message_uri)):
+            self.message_title.append("搜尋結果{}".format(index + 1))
+            self.search_result += ("標題: {}\n{}\n{}\n".format(self.message_text[index], time_list[index], self.message_uri[index]))
+        # for entry in soup.find_all('div', class_="search-item"):
+        #     # At most list 10 matches
+        #     if match_count == 10:
+        #         break
+        #     # Get preview image
+        #     for image_section in entry.find_all('div', class_="plist-con"):
+        #         image_url = image_section.find('a')["style"].split(" ")[1]
+        #         image_url = re.sub("url\(", "https:", image_url)
+        #         image_url = re.sub("\)", "", image_url)
+        #         self.message_image.append(image_url)
+        #     # Get drama name and url
+        #     for image_section in entry.find_all('div', class_="search-item__title"):
+        #         url = image_section.find('a')['href']
+        #         drama_name = image_section.find('a').text
+        #         drama_name = re.sub(" ", "", drama_name)
+        #         self.message_text.append(drama_name[:60])
+        #         self.message_uri.append("https:" + url)
+        #     self.message_title.append("搜尋結果{}".format(match_count + 1))
+        #     self.search_result += ("標題: {}\n{}\n".format(self.message_text[match_count], self.message_uri[match_count]))
+        #     match_count += 1
         return True
         
     def on_enter_select_animate(self, event):
