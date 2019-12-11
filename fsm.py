@@ -414,7 +414,9 @@ class TocMachine(GraphMachine):
             # Get preview image
             for image_section in entry.find_all('div', class_="plist-con"):
                 image_url = image_section.find('a')["style"].split(" ")[1]
-                image_url = re.sub("url\(", "https:", image_url)
+                image_url = re.sub("url\(", "", image_url)
+                if re.match(r"^(https:)(\S*)", image_url) == None:
+                    image_url = "https:" + image_url
                 image_url = re.sub("\)", "", image_url)
                 self.message_image.append(image_url)
             # Get drama name and url
@@ -423,7 +425,10 @@ class TocMachine(GraphMachine):
                 drama_name = image_section.find('a').text
                 drama_name = re.sub(" ", "", drama_name)
                 self.message_text.append(drama_name[:60])
-                self.message_uri.append("https:" + url)
+                if re.match(r"^(https:)(\S*)", url):
+                    self.message_uri.append(url)
+                else:
+                    self.message_uri.append("https:" + url)
             self.message_title.append("搜尋結果{}".format(match_count + 1))
             self.search_result += ("標題: {}\n{}\n".format(self.message_text[match_count], self.message_uri[match_count]))
             match_count += 1
